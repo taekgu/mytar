@@ -1,0 +1,37 @@
+        //tree make node
+        huffNode* huff = (huffNode*)malloc(sizeof(huffNode));
+        huff->right = NULL;
+        huff->left = NULL;
+        int pos = 0;
+        while(fileName[pos] != '\0')
+                pos++;
+        fileName[pos-7] = 'h';
+        fileName[pos-6] = 'u';
+        fileName[pos-5] = 'f';
+        fileName[pos-4] = '\0';
+        hufFile = fopen(fileName,"r");
+
+        //open to tar file? 
+        if(outputFile == NULL || hufFile == NULL)
+        {
+                printf("file is not open.\n");
+                system("pause");
+                return -1;
+        }
+
+        //tree make node
+        huffNode* huff = (huffNode*)malloc(sizeof(huffNode));
+        huff->right = NULL;
+        huff->left = NULL;
+
+        //make tree
+        tree_loadHuff(huff,hufFile);
+
+        //make original file
+        writeData(huff,inputFile,outputFile);
+
+        //message output
+        printf("file tar compeletly.\n");
+        system("pause");
+        return 0;
+}
