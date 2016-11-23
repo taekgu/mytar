@@ -1,5 +1,6 @@
 #define buf_SZ 100
 
+// Lee Seung Bin write this code 
 void performEncoding(char* fName)
 {
 	FILE* fin;
