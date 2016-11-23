@@ -1,6 +1,11 @@
-#define buf_SZ 100
 
-// Lee Seung Bin write this code 
+// Lee Seung Bin write this code
+/*
+#define buf_SZ 100
+#define num_ASCII 256
+int charFreq[num_ASCII];
+void showCharFrequency(void) 
+*/
 void performEncoding(char* fName)
 {
 	FILE* fin;
@@ -13,14 +18,17 @@ void performEncoding(char* fName)
 		return;
 	}
 	
+	memset(charFreq, 0, num_ASCII*sizeof(int));
 	while(fgets(buf, buf_SZ, fin) != 0)
 	{
 		int len = strlen(buf);
 		for( int i = 0;  i < len; i++)
 		{
-			
+			charFreq[(int)buf[i]]++;
 		}
 	}
+	
+	showCharFrequency();
 
 	fclose(fin);
 }
