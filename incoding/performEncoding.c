@@ -29,6 +29,10 @@ void performEncoding(char* fName)
 	}
 	
 	showCharFrequency();
-
+	
+	int cnt = countNonZeroCharacters();
+	heap = (struct node **)malloc((cnt+1)*sizeof(struct node *));
+	memset(heap, 0, (cnt+1)*sizeof(struct node*));
+	
 	fclose(fin);
 }
