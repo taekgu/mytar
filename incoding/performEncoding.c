@@ -34,5 +34,23 @@ void performEncoding(char* fName)
 	heap = (struct node **)malloc((cnt+1)*sizeof(struct node *));
 	memset(heap, 0, (cnt+1)*sizeof(struct node*));
 	
+	for(int i = 0; i< num_ASCII; i++)
+	{
+		if(charFreq[i]>0)
+		{
+			struct node *cur = (struct node *)malloc(sizeof(struct node));
+			cur->c = (char)i;
+			cur->frequency = charFreq[i];
+			cur->left = cur->right = 0;
+			addToHeap(cur);
+		}
+	}
+
+	printf("root %d (%c) : %d\n",(int)heap[1]->c, heap[1]->c, heap[1]->frequency);
+
+	struct node *temp = deleteFromHeap();
+	printf("previous root %d (%c) : %d\n", (int)temp->c, temp->c, temp-<frequency);
+	printf("root %d (%c) : %d\n", (int)heap[1]->c, heap[1]->c, heap[1]->frequency);
+
 	fclose(fin);
 }
