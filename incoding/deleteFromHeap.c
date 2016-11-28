@@ -1,21 +1,20 @@
-#include "haed.h"
+#include "head.h"
 
-struct node * deleteFromHeap(void)
+struct node* deleteFromHeap()
 {
+	struct node* retVal = heap[1];
+	int parent = 1;
+        int left = 2*parent;
+        int right = left+1;
+
 	if(lastHeapIdx <= 0)
 	{
 		printf("Heap is empty\n");
 		return 0;
 	}
 	
-	struct node *retVal = heap[1];
-
 	heap[1] = heap[lastHeapIdx];
 	lastHeapIdx--;
-
-	int parent = 1;
-	int left = 2*parent;
-	int right = left+1;
 
 	while(1)
 	{

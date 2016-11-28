@@ -1,7 +1,10 @@
+#include "head.h"
+
 // seungbin write code
 void showCharFrequency(void)
 {
-	for (int i = 0; i<num_ASCII; i++)
+	int i = 0;
+	for (i = 0; i<num_ASCII; i++)
 	{
 		if(charFreq[i] > 0)
 		{
