@@ -3,8 +3,9 @@ DFH = deleteFromHeap
 CNC = countNonZeroCharacters
 SCF = showCharFrequency
 PE = performEncoding
+TV = traverse
 
-FUNCS = $(ATH).o $(DFH).o $(CNC).o $(SCF).o $(PE).o
+FUNCS = $(ATH).o $(DFH).o $(CNC).o $(SCF).o $(PE).o $(TV).o
 HEAD = head.h
 LIB = libincodingfuncs.a
 HPWD = /home/sb/mytar
@@ -27,6 +28,9 @@ $(SCF).o : $(HEAD) $(SCF).c
 
 $(PE).o : $(HEAD) $(PE).c
 	gcc -c $(PE).c -I$(HPWD)
+
+$(TV).o : $(HEAD) $(TV).c
+	gcc -c $(TV).c -I$(HPWD)
 
 clean : 
 	rm $(LIB) $(FUNCS)

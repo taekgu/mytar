@@ -3,6 +3,7 @@
 int main(int argc, char* argv[])
 {
 	lastHeapIdx = 0;
+	codeBufIdx = -1;
 	if (argc < 3)
 	{
 		printf("please again check!\n");

@@ -19,7 +19,9 @@ struct node
 
 struct node ** heap;
 int lastHeapIdx;
+char codeBuf[100];
+int codeBufIdx;
 
 int charFreq[num_ASCII];
-
+char *symCode[num_ASCII];
 #endif // _head_h

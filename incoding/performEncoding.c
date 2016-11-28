@@ -50,10 +50,45 @@ void performEncoding(char* fName)
 
 	printf("root %d (%c) : %d\n",(int)heap[1]->c, heap[1]->c, heap[1]->frequency);
 
-	temp = (struct node *)deleteFromHeap();
+	//temp = (struct node *)deleteFromHeap();
 	
-	printf("previous root %d (%c) : %d\n", (int)temp->c, temp->c, temp->frequency);
-	printf("root %d (%c) : %d\n", (int)heap[1]->c, heap[1]->c, heap[1]->frequency);
+	//printf("previous root %d (%c) : %d\n", (int)temp->c, temp->c, temp->frequency);
+	//printf("root %d (%c) : %d\n", (int)heap[1]->c, heap[1]->c, heap[1]->frequency);
+
+	struct node *first = 0;
+	struct node *second = 0;
+
+	while(1)
+	{
+		first = (struct node *)deleteFromHeap();
+		second = (struct node *)deleteFromHeap();
+
+		if(second == 0)
+		{
+			printf("Huffman tree building ended\n");
+			break;
+		}
+		struct node* newOne = (struct node*)malloc(sizeof(struct node));
+		newOne->c = 0;
+		newOne->frequency = first ->frequency + second -> frequency;
+		newOne->left = first;
+		newOne->right = second;
+
+		addToHeap(newOne);
+	}
+
+	memset(symCode, 0, sizeof(symCode));
+
+	traverse(first->left, '0');
+	traverse(first->right, '1');
+
+	for(i =0; i<num_ASCII; i++)
+	{
+		if(symCode[i] != 0)
+		{
+			printf("Symbol %c ==> %s\n", (char)i, symCode[i]);
+		}
+	}
 
 	fclose(fin);
 }
