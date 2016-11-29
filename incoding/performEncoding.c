@@ -82,13 +82,26 @@ void performEncoding(char* fName)
 	traverse(first->left, '0');
 	traverse(first->right, '1');
 
+	int numOfSym = 0;
+
 	for(i =0; i<num_ASCII; i++)
 	{
 		if(symCode[i] != 0)
 		{
+			numOfSym++;
 			printf("Symbol %c ==> %s\n", (char)i, symCode[i]);
 		}
 	}
+
+	printf("Number of symbols is %d\n", numOfSym);
+
+	char outputFileName[100];
+	char *period = strchr(fName, (int)'.');
+	strncpy(outputFileName, fName, (int)(period - fName));
+	outputFileName[(int)(period - fName)] = 0;
+	strcat(outputFileName,".myzip");
+
+	printf("Output file name is %s\n", outputFileName);
 
 	fclose(fin);
 }
