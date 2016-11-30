@@ -103,5 +103,29 @@ void performEncoding(char* fName)
 
 	printf("Output file name is %s\n", outputFileName);
 
+	FILE *fout = 0;
+	fout = fopen(outputFileName, "wb");
+	if(fout!=0)
+	{
+		fwrite(&numOfSym, sizeof(numOfSym), 1, fout);
+		
+		char writeBuf[100];
+		for(i=0; i<num_ASCII; i++)
+		{
+			if(symCode[i] != 0)
+			{
+				writeBuf[0] = (char)i;
+				writeBuf[1] = (char)strlen(symCode[i]);
+				strcpy(&writeBuf[2], symCode[i]);
+				fwrite(writeBuf, sizeof(char), 2+strlen(symCode[i]), fout);
+			}
+		}
+		fclose(fout);
+	}
+	else
+	{
+		printf("Error : unable to open %s\n",outputFileName);
+	}
+
 	fclose(fin);
 }
