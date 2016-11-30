@@ -7,7 +7,7 @@ MAIN = tmain.cpp
 FUNCS = $(HEAP).o $(HUFF).o $(TREE).o $(WRT).o
 HEAD = head.h
 LIB = libdecodingfuncs.a
-HPWD = /home/rok/mytar/head
+HPWD = /home/rok/mytar/untar/head
 HEAD = $(HPWD)/head.h
 
 $(LIB) : $(HEAD) $(FUNCS)
