@@ -1,0 +1,131 @@
+#include "head.h"
+
+// Lee Seung Bin write this code
+/*
+#define buf_SZ 100
+#define num_ASCII 256
+int charFreq[num_ASCII];
+void showCharFrequency(void) 
+*/
+void performEncoding(char* fName)
+{
+	FILE* fin;
+	char buf[buf_SZ];
+	int i = 0;
+	struct node *temp;// = (struct node*)malloc(sizeof(struct node));
+	fin = fopen(fName, "rt");
+	if(fin == 0)
+	{
+		printf("Unable to open %s. Program terminated \n", fName);
+		return;
+	}
+	
+	memset(charFreq, 0, num_ASCII*sizeof(int));
+	while(fgets(buf, buf_SZ, fin) != 0)
+	{
+		int len = strlen(buf);
+		for(i = 0;  i < len; i++)
+		{
+			charFreq[(int)buf[i]]++;
+		}
+	}
+	
+	showCharFrequency();
+	
+	int cnt = countNonZeroCharacters();
+	heap = (struct node **)malloc((cnt+1)*sizeof(struct node *));
+	memset(heap, 0, (cnt+1)*sizeof(struct node*));
+	
+	for(i = 0; i< num_ASCII; i++)
+	{
+		if(charFreq[i]>0)
+		{
+			struct node *cur = (struct node *)malloc(sizeof(struct node));
+			cur->c = (char)i;
+			cur->frequency = charFreq[i];
+			cur->left = cur->right = 0;
+			addToHeap(cur);
+		}
+	}
+
+	printf("root %d (%c) : %d\n",(int)heap[1]->c, heap[1]->c, heap[1]->frequency);
+
+	//temp = (struct node *)deleteFromHeap();
+	
+	//printf("previous root %d (%c) : %d\n", (int)temp->c, temp->c, temp->frequency);
+	//printf("root %d (%c) : %d\n", (int)heap[1]->c, heap[1]->c, heap[1]->frequency);
+
+	struct node *first = 0;
+	struct node *second = 0;
+
+	while(1)
+	{
+		first = (struct node *)deleteFromHeap();
+		second = (struct node *)deleteFromHeap();
+
+		if(second == 0)
+		{
+			printf("Huffman tree building ended\n");
+			break;
+		}
+		struct node* newOne = (struct node*)malloc(sizeof(struct node));
+		newOne->c = 0;
+		newOne->frequency = first ->frequency + second -> frequency;
+		newOne->left = first;
+		newOne->right = second;
+
+		addToHeap(newOne);
+	}
+
+	memset(symCode, 0, sizeof(symCode));
+
+	traverse(first->left, '0');
+	traverse(first->right, '1');
+
+	int numOfSym = 0;
+
+	for(i =0; i<num_ASCII; i++)
+	{
+		if(symCode[i] != 0)
+		{
+			numOfSym++;
+			printf("Symbol %c ==> %s\n", (char)i, symCode[i]);
+		}
+	}
+
+	printf("Number of symbols is %d\n", numOfSym);
+
+	char outputFileName[100];
+	char *period = strchr(fName, (int)'.');
+	strncpy(outputFileName, fName, (int)(period - fName));
+	outputFileName[(int)(period - fName)] = 0;
+	strcat(outputFileName,".myzip");
+
+	printf("Output file name is %s\n", outputFileName);
+
+	FILE *fout = 0;
+	fout = fopen(outputFileName, "wb");
+	if(fout!=0)
+	{
+		fwrite(&numOfSym, sizeof(numOfSym), 1, fout);
+		
+		char writeBuf[100];
+		for(i=0; i<num_ASCII; i++)
+		{
+			if(symCode[i] != 0)
+			{
+				writeBuf[0] = (char)i;
+				writeBuf[1] = (char)strlen(symCode[i]);
+				strcpy(&writeBuf[2], symCode[i]);
+				fwrite(writeBuf, sizeof(char), 2+strlen(symCode[i]), fout);
+			}
+		}
+		fclose(fout);
+	}
+	else
+	{
+		printf("Error : unable to open %s\n",outputFileName);
+	}
+
+	fclose(fin);
+}
