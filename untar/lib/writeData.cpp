@@ -1,3 +1,8 @@
+#include "head.h"
+
+unsigned int wbData = 0;
+int remBit = 0;
+
 void writeData(huffNode* head, FILE* in, FILE* out)
 {
         //if not unsigned = (first bit = 1)

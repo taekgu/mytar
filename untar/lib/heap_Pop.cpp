@@ -1,3 +1,5 @@
+#include "head.h"
+
 huffNode* heap_Pop(huffNode** head)
 {
 	//huffnode ju.

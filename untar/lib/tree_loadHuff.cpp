@@ -1,3 +1,5 @@
+#include "head.h"
+
 void tree_loadHuff(huffNode* head, FILE* hufFile)
 {
 	//input data
