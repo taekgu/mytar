@@ -1,7 +1,14 @@
+DIRS = incoding main
 LPWD = /home/sb/mytar/incoding
 
-mytar: main.c
-	gcc -o mytar main.c -I. -L$(LPWD) -lincodingfuncs
+all:
+	@for d in $(DIRS); \
+	do \
+		$(MAKE) -C $$d;\
+	done
 
 clean:
-	rm mytar
+	@for d in $(DIRS); \
+	do \
+		$(MAKE) -C $$d clean; \
+	done
