@@ -1,4 +1,4 @@
-DIRS = incoding main
+DIRS = incoding main untar
 LPWD = /home/sb/mytar/incoding
 
 all:

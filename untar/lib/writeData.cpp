@@ -1,50 +1,142 @@
 #include "head.h"
 
-unsigned int wbData = 0;
-int remBit = 0;
-
-void writeData(huffNode* head, FILE* in, FILE* out)
+void writeData(char *fName);
 {
-        //if not unsigned = (first bit = 1)
-        unsigned char ch[1];
-        //node = head
-        huffNode* node = head;
+	FILE *fin = 0;
+	
+	fin = fopen(fName,"rb");
+	
+	if(fin != 0)
+	{
+		//huffman tree restruct
+		int numOfSym = 0;
+		fread(&numOfSym,sizeof(int),1,fin);
+		
+		//how many symbols 
+		printf("Number of Symbols is %d \n",numOfSym);
 
-        while(fread(ch,sizeof(char),1,in))
-        {
-                //accumulate
-                wbData = (wbData << 8) + ch[0];
-                remBit += 8;
+		struct node *huffRoot = (struct node *)malloc(sizeof(struct node));
+		huffRoot->left = huffRoot->right = 0;
+		struct node *cur = huffRoot;
+	
+		for(int i = 0;i < numOfSym; i++)
+		{
+			char symbolAndLen[2];//0 = symbol, 1 = length
+			fread(symbolAndLen,2,1,fin);
+			char buf[100]
 
-                //reset node
-                node = head;
+			//read huffman code
+			fread(buf,1,(int)symbolAndLen[1],fin);
+			
+			buf[(int)symbolAndLen[1]] = 0;
+			printf("%c 's length = %d 's mean = %s\n",symbolAndLen[0],(int)symbolAndLen[1],buf);
+			
+			cur = huffRoot;
+			for(int i = 0;i < (int)symbolAndLen[1]; i++)
+			{
+				if(buf[i] == '0')
+				{
+					if(cur->left == 0)
+					{
+						cur->left = (struct node *)malloc(sizeof(struct node));
+						cur->left->left = 0;
+						cur->left->right = 0;
+					}
+					cur = cur->left;
+				}
+				else if(buf[i] == '1')
+				{
+					if(cur->right == 0)
+					{
+						cur->right = (struct node *)malloc(sizeof(struct node));
+						cur->right->left = 0;
+						cur->right->right = 0;
+					}
+					cur = cur->left;
+				}
+				else
+				{
+					printf("--CRITICAL ERROR--\n");
+					exit(0);
+				}
+			}
+			cur->c = symbolAndLen[0];
+		} //hufman tree recov
+		
+		//codeBuf[]
+		codeBufIdx=-1;
+		tree_loadHuff(huffRoot->left,'0');
+		tree_loadHuff(huffRoot->right,'1');
+		
+		//decoding
+		FILE *decodedFile;
+		char decodedFName[100];
+		char *period = strchr(fName,(int)'.');
+		strncpy(decodedFName,fName,(int)(peroid - fName));
+		decodedFName[(int)(peroid-fName)] = 0;
+		strcat(decodedFName,".decoded");
+		
+		decodedFile = fopen(decodedFName,"wt");
+		if(decodedFile == 0)
+		{
+			printf("Unable to create the file %s \n",decodedFName);
+			exit(0);
+		}
+		
+		int numBitsToRead = 0;
+		fread(&numBitsToRead,sizeof(int),1,fin);
+		printf("Total number of bits to read is %d\n",numBitsToRead);
+		
 
-                //if last bit > 1
-                for(int i=remBit-1; i >= 0; i--)
-                {
-                        //node move
-                        if(((wbData >> i) & 1) == 0)
-                                node = node->left;
-                        else
-                                node = node->right;
-
-                        if(node->left == NULL) //cur node == leaf
-                        {
-                                //if quit char,quit
-                                if(node->value == 256)
-                                        return;
-
-                                //buffer
-                                char temp[1] = {node->value};
-                                //record result
-                                fwrite(temp,sizeof(char),1,out);
-                                //remain bit = i
-                                remBit = i;
-
-                                //reset node
-                                node = head;
-                        }
-                }
-        }
+		cur = huffRoot;
+		char buf[BUF_SZ];
+		while(1)
+		{
+			int sz = fread(buf,1,BUF_DZ,fin);
+			if(sz == 0)
+			{
+				printf("End of file reached,\n);
+				break;
+			}
+			else
+			{
+				for(int i = 0;i < sz;i++)
+				{
+						for(int j = 0;j < 8;j++)//because byte = 8 bit
+						{
+						if((char)(buf[i] & 0x80) == 0)
+						{
+							cur = cur->left;
+						}
+						else
+						{
+							cur = cur->right;
+						}
+						buf[i] = buf[i] << 1;
+						numBitsToRead--;
+					
+						if(cur->left == 0 && cur->right == 0)
+						{
+							fputc(cur->c,decodedFile);
+							cur = huffRoot;
+						}
+						if(numBitsToRead == 0)
+						{
+							printf("End of decoding\n");
+							fclose(decodedFile);
+							fclose(fin);
+							return;
+						}
+					}
+				}
+			}
+		}
+		
+		fclose(fin);
+	}
+	else
+	{
+		printf("Unable to open %s \n",fName);
+		return;
+	}
 }
-

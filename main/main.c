@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
 	{
 		// huffman decoding -> jk
 		printf("Start Huffman Decoding\n");
+		writeData(argv[3]);
 	}else
 	{
 		printf("please again check!!\n");
