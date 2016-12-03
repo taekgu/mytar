@@ -7,7 +7,7 @@ MAIN = tmain
 FUNCS = $(HUFF).o $(TREE).o $(WRT).o
 HEAD = head.h
 LIB = libdecodingfuncs.a
-HPWD = /home/rok/mytar/untar/head
+HPWD = /home/sb/mytar/untar/head
 HEAD = $(HPWD)/head.h
 
 $(LIB) : $(HEAD) $(FUNCS)
