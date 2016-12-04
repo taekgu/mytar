@@ -7,6 +7,7 @@
 int charFreq[num_ASCII];
 void showCharFrequency(void) 
 */
+
 void performEncoding(char* fName)
 {
 	FILE* fin;
