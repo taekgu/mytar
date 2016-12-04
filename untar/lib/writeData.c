@@ -1,6 +1,6 @@
 #include "head.h"
 
-void writeData(char *fName);
+void writeData(char *fName)
 {
 	FILE *fin = 0;
 	
@@ -23,7 +23,7 @@ void writeData(char *fName);
 		{
 			char symbolAndLen[2];//0 = symbol, 1 = length
 			fread(symbolAndLen,2,1,fin);
-			char buf[100]
+			char buf[100];
 
 			//read huffman code
 			fread(buf,1,(int)symbolAndLen[1],fin);
@@ -52,7 +52,7 @@ void writeData(char *fName);
 						cur->right->left = 0;
 						cur->right->right = 0;
 					}
-					cur = cur->left;
+					cur = cur->right;
 				}
 				else
 				{
@@ -72,8 +72,8 @@ void writeData(char *fName);
 		FILE *decodedFile;
 		char decodedFName[100];
 		char *period = strchr(fName,(int)'.');
-		strncpy(decodedFName,fName,(int)(peroid - fName));
-		decodedFName[(int)(peroid-fName)] = 0;
+		strncpy(decodedFName,fName,(int)(period - fName));
+		decodedFName[(int)(period-fName)] = 0;
 		strcat(decodedFName,".decoded");
 		
 		decodedFile = fopen(decodedFName,"wt");
@@ -89,13 +89,13 @@ void writeData(char *fName);
 		
 
 		cur = huffRoot;
-		char buf[BUF_SZ];
+		char buf[buf_SZ];
 		while(1)
 		{
-			int sz = fread(buf,1,BUF_DZ,fin);
+			int sz = fread(buf,1,buf_SZ,fin);
 			if(sz == 0)
 			{
-				printf("End of file reached,\n);
+				printf("End of file reached,\n");
 				break;
 			}
 			else
@@ -104,30 +104,30 @@ void writeData(char *fName);
 				{
 						for(int j = 0;j < 8;j++)//because byte = 8 bit
 						{
-						if((char)(buf[i] & 0x80) == 0)
-						{
-							cur = cur->left;
-						}
-						else
-						{
-							cur = cur->right;
-						}
-						buf[i] = buf[i] << 1;
-						numBitsToRead--;
+							if((char)(buf[i] & 0x80) == 0)
+							{
+								cur = cur->left;
+							}
+							else
+							{
+								cur = cur->right;
+							}
+							buf[i] = buf[i] << 1;
+							numBitsToRead--;
 					
-						if(cur->left == 0 && cur->right == 0)
-						{
-							fputc(cur->c,decodedFile);
-							cur = huffRoot;
+							if(cur->left == 0 && cur->right == 0)
+							{
+								fputc(cur->c,decodedFile);
+								cur = huffRoot;
+							}
+							if(numBitsToRead == 0)
+							{
+								printf("End of decoding\n");
+								fclose(decodedFile);
+								fclose(fin);
+								return;
+							}
 						}
-						if(numBitsToRead == 0)
-						{
-							printf("End of decoding\n");
-							fclose(decodedFile);
-							fclose(fin);
-							return;
-						}
-					}
 				}
 			}
 		}

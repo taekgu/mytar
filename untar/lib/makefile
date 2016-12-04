@@ -4,23 +4,22 @@ TREE = tree_loadHuff
 WRT = writeData
 MAIN = tmain
 
-FUNCS = $(HUFF).o $(TREE).o $(WRT).o
-HEAD = head.h
+FUNCS = $(HUFF).o $(WRT).o $(TREE).o
 LIB = libdecodingfuncs.a
-HPWD = /home/rok/mytar/untar/head
+HPWD = /home/rok/mytar
 HEAD = $(HPWD)/head.h
 
 $(LIB) : $(HEAD) $(FUNCS)
 	ar rv $(LIB) $(FUNCS)
 
-$(HUFF).o : $(HEAD) $(HUFF).cpp
-	gcc -c $(HUFF).cpp -I$(HPWD)
+$(HUFF).o : $(HEAD) $(HUFF).c
+	gcc -c $(HUFF).c -I$(HPWD)
 
-$(TREE).o : $(HEAD) $(TREE).cpp
-	gcc -c $(TREE).cpp -I$(HPWD)
+$(WRT).o : $(HEAD) $(WRT).c
+	gcc -c $(WRT).c -I$(HPWD)
 
-$(WRT).o : $(HEAD) $(WRT).cpp
-	gcc -c $(WRT).cpp -I$(HPWD)
+$(TREE).o : $(HEAD) $(TREE).c
+	gcc -c $(TREE).c -I$(HPWD)
 
 clean : 
 	rm $(LIB) $(FUNCS)

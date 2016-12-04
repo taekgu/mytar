@@ -1,5 +1,3 @@
-#include "head.h"
-
 int main(int argc, char* argv[])
 {
 	lastHeapIdx = 0;

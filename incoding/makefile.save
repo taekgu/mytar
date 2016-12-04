@@ -6,6 +6,7 @@ PE = performEncoding
 TV = traverse
 
 FUNCS = $(ATH).o $(DFH).o $(CNC).o $(SCF).o $(PE).o $(TV).o
+HEAD = head.h
 LIB = libincodingfuncs.a
 HPWD = /home/rok/mytar
 HEAD = $(HPWD)/head.h
@@ -24,7 +25,7 @@ $(CNC).o : $(HEAD) $(CNC).c
 
 $(SCF).o : $(HEAD) $(SCF).c
 	gcc -c $(SCF).c -I$(HPWD)
-
+cd 
 $(PE).o : $(HEAD) $(PE).c
 	gcc -c $(PE).c -I$(HPWD)
 
