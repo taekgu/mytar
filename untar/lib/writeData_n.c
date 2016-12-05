@@ -1,25 +1,25 @@
 #include "head.h"
-#include 
+
 void writeData(char *fName)
 {
 	FILE *fin = 0;
-	
+	int i = 0;
+	int j = 0;
+	char buffer[buf_SZ] = {0,};
 	fin = fopen(fName,"rb");
 	
+
 	if(fin != 0)
 	{
 		//huffman tree restruct
 		int numOfSym = 0;
 		fread(&numOfSym,sizeof(int),1,fin);
 		
-		//how many symbols 
-		printf("Number of Symbols is %d \n",numOfSym);
-
 		struct node *huffRoot = (struct node *)malloc(sizeof(struct node));
 		huffRoot->left = huffRoot->right = 0;
 		struct node *cur = huffRoot;
 	
-		for(int i = 0;i < numOfSym; i++)
+		for(i = 0;i < numOfSym; i++)
 		{
 			char symbolAndLen[2];//0 = symbol, 1 = length
 			fread(symbolAndLen,2,1,fin);
@@ -29,12 +29,11 @@ void writeData(char *fName)
 			fread(buf,1,(int)symbolAndLen[1],fin);
 			
 			buf[(int)symbolAndLen[1]] = 0;
-			printf("%c 's length = %d 's mean = %s\n",symbolAndLen[0],(int)symbolAndLen[1],buf);
 			
 			cur = huffRoot;
-			for(int i = 0;i < (int)symbolAndLen[1]; i++)
+			for(j = 0;j < (int)symbolAndLen[1]; j++)
 			{
-				if(buf[i] == '0')
+				if(buf[j] == '0')
 				{
 					if(cur->left == 0)
 					{
@@ -44,7 +43,7 @@ void writeData(char *fName)
 					}
 					cur = cur->left;
 				}
-				else if(buf[i] == '1')
+				else if(buf[j] == '1')
 				{
 					if(cur->right == 0)
 					{
@@ -77,6 +76,7 @@ void writeData(char *fName)
 		strcat(decodedFName,".decoded");
 		
 		decodedFile = fopen(decodedFName,"wt");
+		int df = open("decodedFName",O_RDONLY);
 		if(decodedFile == 0)
 		{
 			printf("Unable to create the file %s \n",decodedFName);
@@ -100,9 +100,9 @@ void writeData(char *fName)
 			}
 			else
 			{
-				for(int i = 0;i < sz;i++)
+				for(i = 0;i < sz;i++)
 				{
-						for(int j = 0;j < 8;j++)//because byte = 8 bit
+						for(j = 0;j < 8;j++)//because byte = 8 bit
 						{
 							if((char)(buf[i] & 0x80) == 0)
 							{
@@ -122,12 +122,17 @@ void writeData(char *fName)
 							}
 							if(numBitsToRead == 0)
 							{
-								printf("End of decoding\n");
 								fclose(decodedFile);
 								fclose(fin);
 								return;
 							}
 						}
+				}
+				printf("%s is unzip\n",decodedFName);
+				printf("\nfile's contents = \n");
+				while( read(df,buffer,buf_SZ) > 0 )
+				{
+					printf("%s",buffer);
 				}
 			}
 		}

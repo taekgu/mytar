@@ -3,9 +3,11 @@ DFH = deleteFromHeap
 CNC = countNonZeroCharacters
 SCF = showCharFrequency
 PE = performEncoding
+PEN = performEncoding_n
 TV = traverse
+TVN = traverse_n
 
-FUNCS = $(ATH).o $(DFH).o $(CNC).o $(SCF).o $(PE).o $(TV).o
+FUNCS = $(ATH).o $(DFH).o $(CNC).o $(SCF).o $(PE).o $(PEN).o $(TV).o $(TVN).o
 LIB = libincodingfuncs.a
 HPWD = /home/rok/mytar
 HEAD = $(HPWD)/head.h
@@ -28,8 +30,14 @@ $(SCF).o : $(HEAD) $(SCF).c
 $(PE).o : $(HEAD) $(PE).c
 	gcc -c $(PE).c -I$(HPWD)
 
+$(PEN).o : $(HEAD) $(PEN).c
+	gcc -c $(PEN).c -I$(HPWD)
+
 $(TV).o : $(HEAD) $(TV).c
 	gcc -c $(TV).c -I$(HPWD)
+
+$(TVN).o : $(HEAD) $(TVN).c
+	gcc -c $(TVN).c -I$(HPWD)
 
 clean : 
 	rm $(LIB) $(FUNCS)

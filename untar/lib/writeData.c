@@ -5,10 +5,6 @@ void writeData(char *fName)
 	FILE *fin = 0;
 	int i = 0;
 	int j = 0;
-<<<<<<< HEAD
-=======
-	
->>>>>>> 01830edae84c347629342c844d96a5d3abaea891
 	fin = fopen(fName,"rb");
 	
 

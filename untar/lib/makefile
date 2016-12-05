@@ -2,15 +2,11 @@ HEAP = heap_Pop
 HUFF = huffNode
 TREE = tree_loadHuff
 WRT = writeData
-MAIN = tmain
+NO = writeData_n
 
-FUNCS = $(HUFF).o $(WRT).o $(TREE).o
+FUNCS = $(HUFF).o $(WRT).o $(NO).o $(TREE).o
 LIB = libdecodingfuncs.a
-<<<<<<< HEAD
 HPWD = /home/rok/mytar
-=======
-HPWD = /home/sb/mytar
->>>>>>> 01830edae84c347629342c844d96a5d3abaea891
 HEAD = $(HPWD)/head.h
 
 $(LIB) : $(HEAD) $(FUNCS)
@@ -21,6 +17,9 @@ $(HUFF).o : $(HEAD) $(HUFF).c
 
 $(WRT).o : $(HEAD) $(WRT).c
 	gcc -c $(WRT).c -I$(HPWD)
+
+$(NO).o : $(HEAD) $(NO).c
+	gcc -c $(NO).c -I$(HPWD)
 
 $(TREE).o : $(HEAD) $(TREE).c
 	gcc -c $(TREE).c -I$(HPWD)
