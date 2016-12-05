@@ -7,7 +7,7 @@ TV = traverse
 
 FUNCS = $(ATH).o $(DFH).o $(CNC).o $(SCF).o $(PE).o $(TV).o
 LIB = libincodingfuncs.a
-HPWD = /home/sb/mytar
+HPWD = /home/rok/mytar
 HEAD = $(HPWD)/head.h
 
 $(LIB) : $(HEAD) $(FUNCS)
