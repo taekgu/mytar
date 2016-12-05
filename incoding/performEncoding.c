@@ -13,6 +13,7 @@ void performEncoding(char* fName)
 	FILE* fin;
 	char buf[buf_SZ];
 	int i = 0;
+	int j = 0;
 	struct node *temp;// = (struct node*)malloc(sizeof(struct node));
 	fin = fopen(fName, "rt");
 	if(fin == 0)
@@ -121,6 +122,92 @@ void performEncoding(char* fName)
 				fwrite(writeBuf, sizeof(char), 2+strlen(symCode[i]), fout);
 			}
 		}
+
+		FILE *fin;
+		fin = fopen(fName, "rt");
+		if(fin != 0)
+		{
+			int locTotalNumBit;
+			locTotalNumBit = ftell(fout);
+		
+			if(fseek(fout, 4, SEEK_CUR) != 0)
+			{
+				printf("Failed to move the file pointer \n");
+				fclose(fin);
+				fclose(fout);
+				return;
+			}
+
+			char bitBuf[buf_SZ];
+			int bitBufIdx = 0;
+			int bitShiftCnt = 7;
+			int totalBitNum = 0;
+			char flag = 0;
+
+			memset(bitBuf, 0, buf_SZ);
+
+			while(fgets(buf, buf_SZ, fin) != 0)
+			{
+				int len = strlen(buf);
+				for(i = 0; i<len; i++)
+				{
+					char *huffmanCode = symCode[(int)buf[i]];
+					for(j = 0; j<strlen(huffmanCode); j++)
+					{
+						char val = 0;
+						if(huffmanCode[j] == '0')
+						{
+							val = 0;
+						}else if(huffmanCode[j] == '1')
+						{
+							val = 1;
+						}
+						else
+						{
+							printf("---------critical eroor---------\n");
+						}
+					
+						val = val << bitShiftCnt;
+						bitShiftCnt--;
+
+						bitBuf[bitBufIdx] |= val;
+						flag = 1;
+						totalBitNum++;
+						if(bitShiftCnt < 0)
+						{
+							bitShiftCnt = 7;
+							bitBufIdx++;
+							if(bitBufIdx >= buf_SZ)
+							{
+								fwrite(bitBuf, 1, buf_SZ, fout);
+								flag = 0;
+								bitBufIdx = 0;
+								memset(bitBuf, 0, buf_SZ);
+							}
+						}
+					}
+				}
+			}
+
+			if(flag == 1)
+			{
+				fwrite(bitBuf, 1, bitBufIdx+1, fout);
+			}
+
+			if(fseek(fout, locTotalNumBit, SEEK_SET) == 0)
+			{
+				fwrite(&totalBitNum, sizeof(totalBitNum),1, fout);
+			}else{
+				printf("Unable to record total number of bits\n");
+			}
+
+			fclose(fin);
+		}
+		else
+		{
+			printf("Unable to open the file %s\n", fName);
+		}
+
 		fclose(fout);
 	}
 	else
@@ -128,5 +215,4 @@ void performEncoding(char* fName)
 		printf("Error : unable to open %s\n",outputFileName);
 	}
 
-	fclose(fin);
 }
