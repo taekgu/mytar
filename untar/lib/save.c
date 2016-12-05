@@ -5,10 +5,7 @@ void writeData(char *fName)
 	FILE *fin = 0;
 	int i = 0;
 	int j = 0;
-<<<<<<< HEAD
-=======
 	
->>>>>>> 01830edae84c347629342c844d96a5d3abaea891
 	fin = fopen(fName,"rb");
 	
 
@@ -38,9 +35,9 @@ void writeData(char *fName)
 			printf("%c 's length = %d 's mean = %s\n",symbolAndLen[0],(int)symbolAndLen[1],buf);
 			
 			cur = huffRoot;
-			for(j = 0;j < (int)symbolAndLen[1]; j++)
+			for(i = 0;i < (int)symbolAndLen[1]; i++)
 			{
-				if(buf[j] == '0')
+				if(buf[i] == '0')
 				{
 					if(cur->left == 0)
 					{
@@ -50,7 +47,7 @@ void writeData(char *fName)
 					}
 					cur = cur->left;
 				}
-				else if(buf[j] == '1')
+				else if(buf[i] == '1')
 				{
 					if(cur->right == 0)
 					{
