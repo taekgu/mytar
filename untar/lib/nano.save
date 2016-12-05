@@ -1,10 +1,9 @@
 #include "head.h"
-
+#include 
 void writeData(char *fName)
 {
 	FILE *fin = 0;
-	int i = 0;
-	int j = 0;
+	
 	fin = fopen(fName,"rb");
 	
 	if(fin != 0)
@@ -20,7 +19,7 @@ void writeData(char *fName)
 		huffRoot->left = huffRoot->right = 0;
 		struct node *cur = huffRoot;
 	
-		for(i = 0;i < numOfSym; i++)
+		for(int i = 0;i < numOfSym; i++)
 		{
 			char symbolAndLen[2];//0 = symbol, 1 = length
 			fread(symbolAndLen,2,1,fin);
@@ -33,9 +32,9 @@ void writeData(char *fName)
 			printf("%c 's length = %d 's mean = %s\n",symbolAndLen[0],(int)symbolAndLen[1],buf);
 			
 			cur = huffRoot;
-			for(j = 0;j < (int)symbolAndLen[1]; j++)
+			for(int i = 0;i < (int)symbolAndLen[1]; i++)
 			{
-				if(buf[j] == '0')
+				if(buf[i] == '0')
 				{
 					if(cur->left == 0)
 					{
@@ -45,7 +44,7 @@ void writeData(char *fName)
 					}
 					cur = cur->left;
 				}
-				else if(buf[j] == '1')
+				else if(buf[i] == '1')
 				{
 					if(cur->right == 0)
 					{
