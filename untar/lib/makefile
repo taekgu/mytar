@@ -7,7 +7,7 @@ NO = writeData_n
 
 FUNCS = $(HUFF).o $(WRT).o $(NO).o $(NOTREE).o $(TREE).o
 LIB = libdecodingfuncs.a
-HPWD = /home/rok/mytar
+HPWD = /home/rok/mytar/untar/head
 HEAD = $(HPWD)/head.h
 
 $(LIB) : $(HEAD) $(FUNCS)
