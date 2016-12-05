@@ -1,13 +1,11 @@
 #include "head.h"
 
-void writeData(char *fName)
+void writeData_n(char *fName)
 {
 	FILE *fin = 0;
 	int i = 0;
 	int j = 0;
-	char buffer[buf_SZ] = {0,};
 	fin = fopen(fName,"rb");
-	
 
 	if(fin != 0)
 	{
@@ -64,8 +62,8 @@ void writeData(char *fName)
 		
 		//codeBuf[]
 		codeBufIdx=-1;
-		tree_loadHuff(huffRoot->left,'0');
-		tree_loadHuff(huffRoot->right,'1');
+		tree_loadHuff_n(huffRoot->left,'0');
+		tree_loadHuff_n(huffRoot->right,'1');
 		
 		//decoding
 		FILE *decodedFile;
@@ -76,7 +74,6 @@ void writeData(char *fName)
 		strcat(decodedFName,".decoded");
 		
 		decodedFile = fopen(decodedFName,"wt");
-		int df = open("decodedFName",O_RDONLY);
 		if(decodedFile == 0)
 		{
 			printf("Unable to create the file %s \n",decodedFName);
@@ -86,7 +83,6 @@ void writeData(char *fName)
 		int numBitsToRead = 0;
 		fread(&numBitsToRead,sizeof(int),1,fin);
 		printf("Total number of bits to read is %d\n",numBitsToRead);
-		
 
 		cur = huffRoot;
 		char buf[buf_SZ];
@@ -122,22 +118,15 @@ void writeData(char *fName)
 							}
 							if(numBitsToRead == 0)
 							{
+								printf("%s is unzip\n",decodedFName);
 								fclose(decodedFile);
 								fclose(fin);
 								return;
 							}
 						}
 				}
-				printf("%s is unzip\n",decodedFName);
-				printf("\nfile's contents = \n");
-				while( read(df,buffer,buf_SZ) > 0 )
-				{
-					printf("%s",buffer);
-				}
 			}
 		}
-		
-		fclose(fin);
 	}
 	else
 	{

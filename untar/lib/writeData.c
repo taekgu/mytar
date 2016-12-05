@@ -29,10 +29,10 @@ void writeData(char *fName)
 
 			//read huffman code
 			fread(buf,1,(int)symbolAndLen[1],fin);
-			
+						
 			buf[(int)symbolAndLen[1]] = 0;
 			printf("%c 's length = %d 's mean = %s\n",symbolAndLen[0],(int)symbolAndLen[1],buf);
-			
+
 			cur = huffRoot;
 			for(j = 0;j < (int)symbolAndLen[1]; j++)
 			{
@@ -125,6 +125,7 @@ void writeData(char *fName)
 							if(numBitsToRead == 0)
 							{
 								printf("End of decoding\n");
+								printf("%s is unzip\n",decodedFName);
 								fclose(decodedFile);
 								fclose(fin);
 								return;
