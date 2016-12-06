@@ -60,7 +60,7 @@ void performEncoding_n(char* fName)
 
 		if(second == 0)
 		{
-			printf("Huffman tree building ended\n");
+			//printf("Huffman tree building ended\n");
 			break;
 		}
 		struct node* newOne = (struct node*)malloc(sizeof(struct node));

@@ -9,7 +9,7 @@ struct node* deleteFromHeap()
 
 	if(lastHeapIdx <= 0)
 	{
-		printf("Heap is empty\n");
+		//printf("Heap is empty\n");
 		return 0;
 	}
 	

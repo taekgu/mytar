@@ -1,5 +1,5 @@
 DIRS = incoding untar/lib main
-LPWD = /home/rok/mytar/incoding
+LPWD = /home/sb/mytar/incoding
 
 all:
 	@for d in $(DIRS); \
